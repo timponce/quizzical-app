@@ -18,7 +18,6 @@ export default function Button(props) {
       ? "1px solid #F8BCBC"
       : "1px solid #4D5B9E",
   };
-  console.log(props.isCorrect);
   return (
     <button
       key={props.j}

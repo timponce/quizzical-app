@@ -106,7 +106,16 @@ hr {
     margin-right: 18px;
 }
 
-.check-answers-button {
+.questions-bottom {
+    display: flex;
+    align-items: baseline;
+}
+
+.score {
+    margin-right: 36px;
+}
+
+.submit-button {
     background-color: #4D5B9E;
     color: #F5F7FB;
     border-radius: 10px;

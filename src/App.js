@@ -6,6 +6,8 @@ export default function App() {
 
   const [checkAnswers, setCheckAnswers] = React.useState(false);
 
+  const [newGame, setNewGame] = React.useState(false);
+
   const [startGame, setStartGame] = React.useState(false);
 
   React.useEffect(() => {
@@ -17,11 +19,24 @@ export default function App() {
             question: item.question,
             correct_answer: item.correct_answer,
             incorrect_answers: [...item.incorrect_answers],
+            shuffled_answers: shuffleArray([
+              ...item.incorrect_answers,
+              item.correct_answer,
+            ]),
             selected_answer: "",
           }))
         )
       );
-  }, []);
+  }, [newGame]);
+
+  function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
 
   function selectAnswer(option, questionIndex) {
     setTriviaData((prevTriviaData) => {
@@ -33,8 +48,32 @@ export default function App() {
   }
 
   function submitAnswers() {
-      setCheckAnswers(!checkAnswers);
+    setCheckAnswers(!checkAnswers);
   }
+
+  function getScore() {
+    const correctAnswers = triviaData.filter(
+      (item) => item.selected_answer === item.correct_answer
+    );
+    return correctAnswers.length;
+  }
+
+  function playAgain() {
+    setNewGame(!newGame);
+    setCheckAnswers(!checkAnswers);
+  }
+
+  const checkAnswersButton = (
+    <button className="submit-button" onClick={submitAnswers}>
+      Check answers
+    </button>
+  );
+
+  const newGameButton = (
+    <button className="submit-button" onClick={playAgain}>
+      Play again
+    </button>
+  );
 
   return (
     <main>
@@ -45,7 +84,14 @@ export default function App() {
             checkAnswers={checkAnswers}
             selectAnswer={selectAnswer}
           />
-          <button className="check-answers-button" onClick={submitAnswers}>Check Answers</button>
+          <div className="questions-bottom">
+            {checkAnswers && (
+              <h2 className="score">
+                You scored {getScore()}/5 correct answers
+              </h2>
+            )}
+            {checkAnswers ? newGameButton : checkAnswersButton}
+          </div>
         </div>
       )}
       {!startGame && (

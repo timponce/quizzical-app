@@ -3,12 +3,11 @@ import Button from "./Button";
 
 export default function Questions(props) {
   const questionElements = props.triviaData.map((item, i) => {
-    const allAnswers = [...item.incorrect_answers, item.correct_answer];
     return (
       <div key={i} className="trivia-card">
         <h2 className="question">{item.question}</h2>
         <div className="answer-buttons">
-          {allAnswers.map((option, j) => (
+          {item.shuffled_answers.map((option, j) => (
             <Button
               option={option}
               selectAnswer={props.selectAnswer}
